@@ -42,3 +42,5 @@ export const imageMap: Record<string, any> = {
   "ISIA/SUAREZ_SALAZAR_DRAKO/WhatsApp Image 2025-05-26 at 7.03.43 PM.jpeg": require('./ISIA/SUAREZ_SALAZAR_DRAKO/WhatsApp Image 2025-05-26 at 7.03.43 PM.jpeg'),
   "ISIA/VICTOR_ANDRE/imagen1.jpg": require('./ISIA/VICTOR_ANDRE/imagen1.jpg'),
 };
+
+export default function () {}

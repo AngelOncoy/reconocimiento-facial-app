@@ -1,5 +1,3 @@
-// components/IndexPage.tsx
-
 import React, { useState } from 'react';
 import { styles } from './Styles';
 import {
@@ -14,14 +12,15 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import { imageMap } from '../imageMap'; // corrige la ruta si es necesario
+import { imageMap } from '../imageMap'; // Asegúrate de que la ruta sea correcta
 
 // 👉 Función utilitaria para normalizar el campo foto
 function normalizarFotoNombre(foto: string): string {
-    let path = foto.trim().replace(/\\/g, '/');
-    path = path.replace(/^ISIA\/ISIA\//, 'ISIA/');
+    let path = foto.trim().replace(/\\/g, '/'); // Reemplazar las barras invertidas por barras normales
+    path = path.replace(/^ISIA\/ISIA\//, 'ISIA/'); // Solo quitar 'ISIA/ISIA/' si existe
     return path;
 }
+
 
 const isMediaTypeAvailable = (ImagePicker as any).MediaType !== undefined;
 const mediaType = isMediaTypeAvailable
@@ -48,8 +47,8 @@ export default function IndexPage() {
     const [correo, setCorreo] = useState<string>('');
     const [errorMensaje, setErrorMensaje] = useState<string | null>(null);
 
-    const API_URL_COMPARAR = 'http://10.0.2.2:8000/comparar';
-    const API_URL_AGREGAR = 'http://10.0.2.2:8000/agregar_persona';
+    const API_URL_COMPARAR = 'http://10.0.2.2:8000/comparar'; // Ajusta según sea necesario
+    const API_URL_AGREGAR = 'http://10.0.2.2:8000/agregar_persona'; // Ajusta según sea necesario
 
     const pickImage = async () => {
         try {
@@ -124,8 +123,6 @@ export default function IndexPage() {
                 },
             });
 
-            console.log('👉 response completo:', response);
-
             if (response.status === 200) {
                 const data = response.data;
 
@@ -135,8 +132,14 @@ export default function IndexPage() {
                     setErrorMensaje(null);
                 } else {
                     setResultado(data.datos);
-                    const fotoEncontradaUri = `http://10.0.2.2:8000/${normalizarFotoNombre(data.datos.foto)}`;
-                    setFotoEncontrada({ uri: fotoEncontradaUri });
+
+                    // Usar el imageMap para resolver la imagen localmente
+                    const fotoEncontradaUri = imageMap[normalizarFotoNombre(data.datos.foto)];
+
+                    // Log para verificar la ruta de la imagen final
+                    console.log("Ruta de la imagen encontrada:", fotoEncontradaUri);
+
+                    setFotoEncontrada(fotoEncontradaUri);
 
                     Animated.timing(fadeAnim, {
                         toValue: 1,
